@@ -1,17 +1,22 @@
-RS      equ     P1.3    
-EN      equ     P1.2   
-KEY0    equ     P1.0    ; Tecla 0 do teclado matricial
+RS equ P1.3
+EN equ P1.2
+KEY0 equ P1.0 ; Tecla 0 do teclado matricial
 
 org 0000h
 
-    LJMP START
+LJMP START
+org 023H
+MOV R6, #1H
+MOV A, SBUF
+CLR RI
+RETI
 
-org 0030h
+org 0040h
 MAIN:
-	ACALL lcd_init
+    ACALL lcd_init
 
 START:
-    MOV 20H, #'M' 
+    MOV 20H, #'M'
     MOV 21H, #'E'
     MOV 22H, #'M'
     MOV 23H, #'O'
@@ -21,141 +26,190 @@ START:
     MOV 27H, #'E'
     MOV R5, #5
     ACALL lcd_init
-    
+
     MOV A, #42h
     ACALL posicionaCursor
-    MOV A, #20h 
+    MOV A, #20h
     ACALL escreveString
-    MOV SCON, #40h 
-    MOV PCON, #80h 
-    MOV TMOD, #20h 
-    MOV TH1, #243 
+    MOV SCON, #50h
+    MOV PCON, #80h
+    MOV TMOD, #20h
+    MOV TH1, #243
     MOV TL1, #243
-    SETB TR1 
-    MOV A, #'1' 
+    SETB TR1
+    MOV IE, #90H
+    MOV A, #'1'
     MOV R1, #30h
-		
 
-
-
-    ROTINA:
-	MOV R3, #3
-	ACALL leituraTeclado
-	JNB F0, ROTINA   ;if F0 is clear, jump to ROTINA
-    ROT:
+ROTINA:
+    MOV R3, #3
+    ACALL leituraTeclado
+    JNB F0, ROTINA ; Se F0 estiver limpo, pule para ROTINA
+ROT:
     ACALL clearDisplay
     MOV R2, #10
+	MOV A, #30h
     ACALL generateRandomNumber
-   ;arrumar posicionacursor pra mostrar
-   ;3 numeros em sequencia
+
+volta:
     MOV A, #02H
     ACALL posicionaCursor
-    MOV A, #31h 
-	;arrumar a impressao no led para ints
+    MOV A, #31h
+
     ACALL displayNumber
-    
+
     DJNZ R3, ROT
-	
-  	;fazer comparação com o recebido
-    ; pelo user
 
-
-    ;ACALL checkUserInput
-	CLR F0
-	JMP  MAIN
-
-
-
+; Comparar com a entrada do usuário
+MOV R4, #3
+MOV R1, #31h
+ACALL checkUserInput
+CLR F0
+JMP MAIN
 
 leituraTeclado:
-	MOV R0, #0			; clear R0 - the first key is key0
+    MOV R0, #0 ; Limpa R0 - a primeira tecla é a tecla 0
 
-	; scan row0
-	MOV P0, #0FFh	
-	CLR P0.0			; clear row0
-	CALL colScan		; call column-scan subroutine
-	JB F0, Finish		; | if F0 is set, jump to end of program 
-						; | (because the pressed key was found and its number is in  R0)
-	Finish:
-	RET
+    ; Verifica a linha 0
+    MOV P0, #0FFh
+    CLR P0.0 ; Limpa a linha 0
+    CALL colScan ; Chama a sub-rotina de varredura de coluna
+    JB F0, Finish ; Se F0 estiver definido, pule para o final do programa (porque a tecla pressionada foi encontrada e seu número está em R0)
+    Finish:
+    RET
 
-; column-scan subroutine
+; Sub-rotina de varredura de coluna
 colScan:
-	JNB P0.4, gotKey	; if col0 is cleared - key found
-	INC R0				; otherwise move to next key
-	JNB P0.5, gotKey	; if col1 is cleared - key found
-	INC R0				; otherwise move to next key
-	JNB P0.6, gotKey	; if col2 is cleared - key found
-	INC R0				; otherwise move to next key
-	RET					; return from subroutine - key not found
+    JNB P0.4, gotKey ; Se col0 estiver limpo - tecla encontrada
+    INC R0 ; Caso contrário, vá para a próxima tecla
+    JNB P0.5, gotKey ; Se col1 estiver limpo - tecla encontrada
+    INC R0 ; Caso contrário, vá para a próxima tecla
+    JNB P0.6, gotKey ; Se col2 estiver limpo - tecla encontrada
+    INC R0 ; Caso contrário, vá para a próxima tecla
+    RET ; Retorne da sub-rotina - tecla não encontrada
 gotKey:
-	SETB F0				; key found - set F0
-	RET					; and return from subroutine
-
-   
-  
+    SETB F0 ; Tecla encontrada - defina F0
+    RET ; E retorne da sub-rotina
 
 generateRandomNumber:
-    ; Aqui estamos gerando um número pseudo-aleatório 
-	ADD A, #30H
+     ; Endereço de memória onde armazenar o número gerado
+    MOV R2, #10 ; Limite superior para o número gerado
+
+generate_loop:
     MOV @R1, A 
-    MOV B, #3
-    ADD A, #2
-    MUL AB  
+    MOV B, #2
+    ADD A, #3
     INC R1
     INC A
-    DJNZ R2, generateRandomNumber
-    RET
+    DJNZ R2, generate_loop
 	
-    
-displayNumber:
-	 MOV R2, #4
-	 MOV R1, A
-denovo:
-    MOV A, @R1 
-    ACALL sendCharacter 
-    INC R1 
-    DJNZ R2, denovo 
-over:
-    RET
 
+generate_loop_end:
+    JMP volta
+
+displayNumber:
+    MOV R2, #3 ; Número de dígitos a serem exibidos
+    MOV R1, A ; Endereço do número a ser exibido
+
+display_loop:
+    MOV A, @R1 ; Carrega o número da memória
+    ;MOV B, #10 ; Base decimal
+    ;DIV AB ; Divide por 10 para obter a dezena
+    ;ADD A, #30h ; Converte para ASCII
+    ACALL sendCharacter ; Envia o dígito para o LCD
+    INC R1 ; Avança para o próximo dígito
+    DJNZ R2, display_loop ; Repete para os próximos dígitos
+    RET
 
 escreveString:
-    MOV R1, A 
-loop:
-    MOV A, @R1 
-    JZ acabou 
-    ACALL sendCharacter 
-    INC R1 
-    JMP loop 
-acabou:
-    RET
-
-waitForUserInput:
-    ; Aqui estamos esperando a entrada do usuário
-WAIT_INPUT:
-    JNB KEY0, WAIT_INPUT ; Esperar pelo pressionamento do botão 0 do teclado matricial
-    MOV A, P1
-    ANL A, #0Fh
-    MOV R6, A
+    MOV R1, A ; Endereço da string
+    loop:
+    MOV A, @R1 ; Carrega o caractere da memória
+    JZ acabou
+    ACALL sendCharacter ; Envia o caractere para o LCD
+    INC R1 ; Avança para o próximo caractere
+    JMP loop
+    acabou:
     RET
 
 checkUserInput:
-    ; Aqui estamos verificando se a entrada do usuário está correta
-    MOV A, R6
-    SUBB A, R7
-    JZ INPUT_CORRECT
-    ; Aqui você pode adicionar o código para lidar com a entrada incorreta
-INPUT_CORRECT:
-    ; Aqui você pode adicionar o código para lidar com a entrada correta
-    MOV DPTR, #congratsMsg
-    ACALL escreveString
-    RET
+   
+    MOV R1, #31h ; Endereço da entrada do usuário
 
-congratsMsg:
-    DB 'A'
+check_loop:
+ MOV R6, #0H
+    CJNE R6, #1H, $
+    MOV R7, A ;
+    MOV A, @R1 ; Carrega o dígito da memória
+   
 
+    SUBB A, R7 ; Compara com o número gerado aleatoriamente
+    JNZ INPUT_ERRO ; Se não forem iguais, vá para INPUT_ERRO
+    INC R1 ; Avança para o próximo dígito
+    DJNZ R4, check_loop ; Repete para os próximos dígitos
+    JMP INPUT_ACERTO ; Se todos os dígitos forem iguais, vá para INPUT_ACERTO
+
+INPUT_ACERTO:
+
+MOV SCON, #40h ;porta serial no modo 1
+MOV PCON, #80h ;set o bit SMOD
+MOV TMOD, #20h ;CT1 no modo 2
+MOV TH1, #243 ;valor para a recarga
+MOV TL1, #243 ;valor para a primeira contagem
+SETB TR1 ;liga o contador/temporizador 1
+    MOV 10H, #'V' 
+    MOV 11H, #'I'
+    MOV 12H, #'T'
+    MOV 13H, #'O'
+    MOV 14H, #'R'
+    MOV 15H, #'I'
+    MOV 16H, #'A'
+    MOV R1, #10H
+
+LB:
+MOV A, @R1
+MOV SBUF, A ;transmite o conteúdo do acumulador
+SUBB A, #16H
+JZ FIM
+JNB TI, $ ;aguarda o término da transmissão
+CLR TI ;apaga indicador de fim de transmissão
+INC R1
+
+SJMP LB ;volta para a próxima transmissão 
+   
+INPUT_ERRO:
+MOV SCON, #40h ;porta serial no modo 1
+MOV PCON, #80h ;set o bit SMOD
+MOV TMOD, #20h ;CT1 no modo 2
+MOV TH1, #243 ;valor para a recarga
+MOV TL1, #243 ;valor para a primeira contagem
+SETB TR1 ;liga o contador/temporizador 1
+    MOV 50H, #'D' 
+    MOV 51H, #'E'
+    MOV 52H, #'R'
+    MOV 53H, #'R'
+    MOV 54H, #'O'
+    MOV 55H, #'T'
+    MOV 56H, #'A'
+    MOV R1, #50H
+
+LB1:
+MOV A, @R1 
+MOV SBUF, A ;transmite o conteúdo do acumulador
+SUBB A, #56H
+JZ FIM
+JNB TI, $ ;aguarda o término da transmissão
+CLR TI ;apaga indicador de fim de transmissão
+INC R1
+SJMP LB1 ;volta para a próxima transmissão 
+
+
+FIM:
 JMP $
+
+
+
+
 
 
 lcd_init:
@@ -309,9 +363,16 @@ clearDisplay:
     SETB EN   
     CLR EN   
 
-    CALL delay  
+    CALL delay_clear  
     RET
-
+delay_clear:
+ MOV R0, #255
+ DJNZ R0, $
+ MOV R0, #255
+ DJNZ R0, $
+ MOV R0, #255
+ DJNZ R0, $
+ RET
 delay:
     MOV R0, #50
     DJNZ R0, $
