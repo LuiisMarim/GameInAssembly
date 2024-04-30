@@ -26,32 +26,43 @@ START:
     ACALL posicionaCursor
     MOV A, #20h 
     ACALL escreveString
+    MOV SCON, #40h 
+    MOV PCON, #80h 
+    MOV TMOD, #20h 
+    MOV TH1, #243 
+    MOV TL1, #243
+    SETB TR1 
+    MOV A, #'1' 
+    MOV R1, #30h
+		
 
 
 
     ROTINA:
-	MOV R2, #3
+	MOV R3, #3
 	ACALL leituraTeclado
 	JNB F0, ROTINA   ;if F0 is clear, jump to ROTINA
-
-    MOV R1, #30h
-
     ROT:
-	ACALL clearDisplay
+    ACALL clearDisplay
+    MOV R2, #10
     ACALL generateRandomNumber
-	MOV A, R7
-    MOV @R1,A
-	MOV A, #02H
-	ACALL posicionaCursor
+   ;arrumar posicionacursor pra mostrar
+   ;3 numeros em sequencia
+    MOV A, #02H
+    ACALL posicionaCursor
+    MOV A, #31h 
+	;arrumar a impressao no led para ints
     ACALL displayNumber
-    INC R1
-	INC A
-    DJNZ R2, ROT
+    
+    DJNZ R3, ROT
 	
-  
+  	;fazer comparação com o recebido
+    ; pelo user
+
+
     ;ACALL checkUserInput
 	CLR F0
-	JMP  ROTINA
+	JMP  MAIN
 
 
 
@@ -85,20 +96,39 @@ gotKey:
   
 
 generateRandomNumber:
-    ; Aqui estamos gerando um número aleatório entre 0 e 9
-    MOV A, #0Ah
-    MOV B, #0FFh
-    DIV AB
-    MOV R7, B
-   
+    ; Aqui estamos gerando um número pseudo-aleatório 
+	ADD A, #30H
+    MOV @R1, A 
+    MOV B, #3
+    ADD A, #2
+    MUL AB  
+    INC R1
+    INC A
+    DJNZ R2, generateRandomNumber
+    RET
 	
+    
+displayNumber:
+	 MOV R2, #4
+	 MOV R1, A
+denovo:
+    MOV A, @R1 
+    ACALL sendCharacter 
+    INC R1 
+    DJNZ R2, denovo 
+over:
     RET
 
-displayNumber:
-    ; Aqui estamos exibindo o número gerado no LCD
-    MOV A, R7
-	ADD A, #30h
-    ACALL sendCharacter
+
+escreveString:
+    MOV R1, A 
+loop:
+    MOV A, @R1 
+    JZ acabou 
+    ACALL sendCharacter 
+    INC R1 
+    JMP loop 
+acabou:
     RET
 
 waitForUserInput:
@@ -126,6 +156,8 @@ congratsMsg:
     DB 'A'
 
 JMP $
+
+
 lcd_init:
     CLR RS        
     CLR P1.7       
@@ -209,16 +241,6 @@ sendCharacter:
     CALL delay        
     RET
 
-escreveString:
-    MOV R1, A 
-loop:
-    MOV A, @R1 
-    JZ acabou 
-    ACALL sendCharacter 
-    INC R1 
-    JMP loop 
-acabou:
-    RET
 
 posicionaCursor:
     CLR RS          
@@ -294,4 +316,3 @@ delay:
     MOV R0, #50
     DJNZ R0, $
     RET
-
