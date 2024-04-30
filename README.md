@@ -41,7 +41,9 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 
 - [x] Tarefa 1 - Elaboração e criação do protótipo simplificado como base de referência.
 - [x] Tarefa 2 - Inicio da codificação. 
-- [ ] Tarefa 3 - 1° Fase de testes. 
+- [x] Tarefa 3 - 1° Fase de testes.
+- [x] Tarefa 4 - 80% do jogo completo.
+- [ ] Tarefa 5 - Jogo completo. 
 
 
 ## Autores ✒️  
