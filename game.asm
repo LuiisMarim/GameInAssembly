@@ -30,20 +30,28 @@ START:
 
 
     ROTINA:
+	MOV R2, #3
 	ACALL leituraTeclado
 	JNB F0, ROTINA   ;if F0 is clear, jump to ROTINA
-    ACALL clearDisplay
-	
+
+    MOV R1, #30h
+
+    ROT:
+	ACALL clearDisplay
     ACALL generateRandomNumber
-	CLR A
-	ACALL generateRandomNumber
-	MOV A, #2H
+	MOV A, R7
+    MOV @R1,A
+	MOV A, #02H
 	ACALL posicionaCursor
     ACALL displayNumber
-   ; ACALL waitForUserInput
+    INC R1
+	INC A
+    DJNZ R2, ROT
+	
+  
     ;ACALL checkUserInput
 	CLR F0
-	JMP ROTINA
+	JMP  ROTINA
 
 
 
@@ -89,7 +97,6 @@ generateRandomNumber:
 displayNumber:
     ; Aqui estamos exibindo o número gerado no LCD
     MOV A, R7
-	ADD A, #30h
 	ADD A, #30h
     ACALL sendCharacter
     RET
@@ -287,3 +294,4 @@ delay:
     MOV R0, #50
     DJNZ R0, $
     RET
+
