@@ -23,7 +23,7 @@ Para desenvolver essa ideia, será necessário implementar as seguintes lógicas
 
 - Criar uma função que lê o teclado matricial e armazena a tecla apertada pelo usuário para inicio do jogo.
 - Criar uma função que confira os alfanuméricos colocados pelo usuário com os alfanuméricos que foram gerados.
-- Terminar o jogo caso os números não batam.
+- Terminar o jogo caso os caracteres não batam.
 - Criar uma função que mostra o tempo de jogo e que para a partida caso o tempo ultrapasse o que for previamente determinado para cada fase.
 - Em caso de derrota ou tempo esgotado mostrar isso no display e reiniciar o jogo.
 - Após a conferência da sequência, mensagem de vitória na tela RX.
