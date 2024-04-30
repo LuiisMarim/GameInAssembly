@@ -15,18 +15,14 @@ Jogo de memória em Assembly para 8051: Desenvolvido para o microcontrolador 805
 
 - EdSim51
 ---
-### Inicio de implementação 📦
+### Implementação 📦
 
-O jogo terá uma fase para decorrar alfanuméricos. 
+O jogo consiste em uma fase para decorrar alfanuméricos. 
 
-Para desenvolver essa ideia, será necessário implementar as seguintes lógicas:
+Para desenvolver essa ideia, foi utilizado o seguinte [fluxograma](https://github.com/LuiisMarim/GameInAssembly/blob/main/img/Fluxograma%20-%20GameInAssembly.jpg).
 
-- Criar uma função que lê o teclado matricial e armazena a tecla apertada pelo usuário para inicio do jogo.
-- Criar uma função que confira os alfanuméricos colocados pelo usuário com os alfanuméricos que foram gerados.
-- Terminar o jogo caso os caracteres não batam.
-- Criar uma função que mostra o tempo de jogo e que para a partida caso o tempo ultrapasse o que for previamente determinado para cada fase.
-- Em caso de derrota ou tempo esgotado mostrar isso no display e reiniciar o jogo.
-- Após a conferência da sequência, mensagem de vitória na tela RX.
+
+  <img src="https://github.com/LuiisMarim/GameInAssembly/blob/main/img/Fluxograma%20-%20GameInAssembly.jpg" alt="ckt" width="800" />
   
 ---
 
