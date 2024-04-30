@@ -2,8 +2,10 @@
 
 Jogo de memória em Assembly para 8051: Desenvolvido para o microcontrolador 8051, este projeto é uma prova de habilidade técnica e criatividade. Desafie-se em um ambiente programado em Assembly e aprimore suas habilidades de memória e concentração enquanto se diverte. 🕹️
 
-> [!IMPORTANT]
-> Este projeto está na primeira etapa de seu desenvolvimento.
+<!--
+[!IMPORTANT]
+Este projeto está na primeira etapa de seu desenvolvimento.
+-->
 
 ---
 
