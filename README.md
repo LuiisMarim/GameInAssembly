@@ -29,7 +29,11 @@ Este projeto está na primeira etapa de seu desenvolvimento.
 - Caso erre: DERROTA.
 
 ---
-### Implementação 📦
+
+
+
+---
+### 📈 Objetivo e Implementação 📦
 
 O jogo consiste em uma fase para decorrar alfanuméricos. 
 
@@ -45,9 +49,6 @@ Para desenvolver a ideia, foi utilizado o seguinte [fluxograma](https://github.c
 ### Limitações ❌
 
 - A codificação apresenta apenas uma fase de jogo. 
-
----
-### Comportamento 🎮
 
 ---
 
