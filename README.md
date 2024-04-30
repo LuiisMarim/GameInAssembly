@@ -30,9 +30,6 @@ Este projeto está na primeira etapa de seu desenvolvimento.
 
 ---
 
-
-
----
 ### 📈 Objetivo e Implementação 📦
 
 O jogo consiste em uma fase para decorrar alfanuméricos. 
