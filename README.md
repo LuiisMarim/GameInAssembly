@@ -17,22 +17,17 @@ Jogo de memória em Assembly para 8051: Desenvolvido para o microcontrolador 805
 ---
 ### Inicio de implementação 📦
 
-O jogo terá 3 fases, fácil, médio e difícil, sendo a diferença a quantidade de dígitos em cada uma. 
-
-- A fase fácil apresentará 3 números de 1 dígito cada.
-- A fase média apresentará 3 números de 2 dígitos cada.
-- A fase final apresentará 3 números de 3 dígitos cada.
+O jogo terá uma fase para decorrar alfanuméricos. 
 
 Para desenvolver essa ideia, será necessário implementar as seguintes lógicas:
 
-- Criar 3 arrays, uma para cada nível, que irá gerar números aleatórios e apresentar no display.
-- Criar uma função que lê o teclado matricial e armazena a tecla apertada pelo usuário.
-- Criar uma função que confira os números colocados pelo usuário com os números que foram gerados pela array.
+- Criar uma função que lê o teclado matricial e armazena a tecla apertada pelo usuário para inicio do jogo.
+- Criar uma função que confira os alfanuméricos colocados pelo usuário com os alfanuméricos que foram gerados.
 - Terminar o jogo caso os números não batam.
 - Criar uma função que mostra o tempo de jogo e que para a partida caso o tempo ultrapasse o que for previamente determinado para cada fase.
 - Em caso de derrota ou tempo esgotado mostrar isso no display e reiniciar o jogo.
-- Após a conferência da sequência, caso esteja certa garantir que isso gere a nova array com novos números na dificuldade seguinte.
-- Garantir que a função que lê o teclado consiga armazenar mais de um dígito para os casos de números maiores que 9.
+- Após a conferência da sequência, mensagem de vitória na tela RX.
+  
 ---
 
 ### Ajustes e melhorias 🚧
