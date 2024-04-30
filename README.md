@@ -14,16 +14,39 @@ Jogo de memória em Assembly para 8051: Desenvolvido para o microcontrolador 805
 ![AssemblyScript](https://img.shields.io/badge/assembly%20script-%23000000.svg?style=for-the-badge&logo=assemblyscript&logoColor=white)
 
 - EdSim51
+
+---
+
+### Instruções de Uso ✍🏻
+
+- Abra a codificação no EdSim51. 
+- Inicie o jogo apertando a tecla '#' do teclado matricial.
+- Decore o valor mostrado no display LCD.
+- Insira o valor decorado no RX.
+- Caso acerte: VITÓRIA.
+- Caso erre: DERROTA.
+
 ---
 ### Implementação 📦
 
 O jogo consiste em uma fase para decorrar alfanuméricos. 
 
-Para desenvolver essa ideia, foi utilizado o seguinte [fluxograma](https://github.com/LuiisMarim/GameInAssembly/blob/main/img/Fluxograma%20-%20GameInAssembly.jpg).
+Para desenvolver a ideia, foi utilizado o seguinte [fluxograma](https://github.com/LuiisMarim/GameInAssembly/blob/main/img/Fluxograma%20-%20GameInAssembly.jpg).
 
 
   <img src="https://github.com/LuiisMarim/GameInAssembly/blob/main/img/Fluxograma%20-%20GameInAssembly.jpg" alt="ckt" width="800" />
   
+
+
+---
+
+### Limitações ❌
+
+- A codificação apresenta apenas uma fase de jogo. 
+
+---
+### Comportamento 🎮
+
 ---
 
 ### Ajustes e melhorias 🚧
@@ -34,7 +57,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [x] Tarefa 2 - Inicio da codificação. 
 - [x] Tarefa 3 - 1° Fase de testes.
 - [x] Tarefa 4 - 80% do jogo completo.
-- [ ] Tarefa 5 - Jogo completo. 
+- [x] Tarefa 5 - Jogo completo (30/04). 
 
 
 ## Autores ✒️  
