@@ -54,11 +54,14 @@ ROT:
     MOV A, #30h
     ACALL generateRandomNumber
 
+volta:
     MOV A, #02H
     ACALL posicionaCursor
     MOV A, #31h
 
     ACALL displayNumber
+    ACALL delay_memoria
+    ACALL clearDisplay
 
 ;Comparar com a entrada do usuário
     MOV R4, #3
@@ -96,8 +99,9 @@ generateRandomNumber:
 
 generate_loop:
     MOV @R1, A 
-    MOV B, #2
+    MOV B, #4
     ADD A, #3
+	ADD A, B
     INC R1
     INC A
     DJNZ R2, generate_loop
@@ -166,8 +170,7 @@ INPUT_ACERTO:
 LB:
     MOV A, @R1
     MOV SBUF, A ;transmite o conteúdo do acumulador
-    SUBB A, #16H
-    JZ FIM
+   
     JNB TI, $ ;aguarda o término da transmissão
     CLR TI ;apaga indicador de fim de transmissão
     INC R1
@@ -195,8 +198,6 @@ INPUT_ERRO:
 LB1:
     MOV A, @R1 
     MOV SBUF, A ;transmite o conteúdo do acumulador
-    SUBB A, #56H
-    JZ FIM
     JNB TI, $ ;aguarda o término da transmissão
     CLR TI ;apaga indicador de fim de transmissão
     INC R1
@@ -376,6 +377,12 @@ delay_clear:
     MOV R0, #255
     DJNZ R0, $
     RET
+
+delay_memoria:
+    MOV R0, #2
+    DJNZ R0, $
+    RET
+
 
 delay:
     MOV R0, #50
