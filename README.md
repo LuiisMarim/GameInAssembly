@@ -24,7 +24,7 @@ Este projeto está na primeira etapa de seu desenvolvimento.
 - Abra a codificação no EdSim51. 
 - Inicie o jogo apertando a tecla '#' do teclado matricial.
 - Decore o valor mostrado no display LCD.
-- Insira o valor decorado no RX.
+- Insira o valor decorado no TX.
 - Caso acerte: VITÓRIA.
 - Caso erre: DERROTA.
 
