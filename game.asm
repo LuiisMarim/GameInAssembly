@@ -161,6 +161,7 @@ INPUT_ACERTO:
     MOV 15H, #'I'
     MOV 16H, #'A'
     MOV R1, #10H
+    MOV R2, #7
 
 LB:
     MOV A, @R1
@@ -170,8 +171,9 @@ LB:
     JNB TI, $ ;aguarda o término da transmissão
     CLR TI ;apaga indicador de fim de transmissão
     INC R1
+    DJNZ R2, LB
 
-SJMP LB ;volta para a próxima transmissão 
+    SJMP FIM
    
 INPUT_ERRO:
     MOV SCON, #40h ;porta serial no modo 1
@@ -188,6 +190,7 @@ INPUT_ERRO:
     MOV 55H, #'T'
     MOV 56H, #'A'
     MOV R1, #50H
+    MOV R2, #7
 
 LB1:
     MOV A, @R1 
@@ -197,8 +200,9 @@ LB1:
     JNB TI, $ ;aguarda o término da transmissão
     CLR TI ;apaga indicador de fim de transmissão
     INC R1
-    SJMP LB1 ;volta para a próxima transmissão 
+    DJNZ R2, LB1
 
+    SJMP FIM
 
 FIM:
 JMP $
