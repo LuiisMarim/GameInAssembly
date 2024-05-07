@@ -45,23 +45,20 @@ START:
     MOV R1, #30h
 
 ROTINA:
-    
     ACALL leituraTeclado
     JNB F0, ROTINA ; Se F0 estiver limpo, pule para ROTINA
+
 ROT:
     ACALL clearDisplay
     MOV R2, #10
     MOV A, #30h
     ACALL generateRandomNumber
 
-volta:
     MOV A, #02H
     ACALL posicionaCursor
     MOV A, #31h
 
     ACALL displayNumber
-
-    
 
 ;Comparar com a entrada do usuário
     MOV R4, #3
@@ -115,9 +112,6 @@ displayNumber:
 
 display_loop:
     MOV A, @R1 ; Carrega o número da memória
-    ;MOV B, #10 ; Base decimal
-    ;DIV AB ; Divide por 10 para obter a dezena
-    ;ADD A, #30h ; Converte para ASCII
     ACALL sendCharacter ; Envia o dígito para o LCD
     INC R1 ; Avança para o próximo dígito
     DJNZ R2, display_loop ; Repete para os próximos dígitos
