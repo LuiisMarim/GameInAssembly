@@ -5,13 +5,16 @@ KEY0 equ P1.0 ; Tecla 0 do teclado matricial
 org 0000h
 
 LJMP START
+
 org 023H
-MOV R6, #1H
-MOV A, SBUF
-CLR RI
-RETI
+    MOV R6, #1H
+    MOV A, SBUF
+    CLR RI
+    RETI
 
 org 0040h
+
+
 MAIN:
     ACALL lcd_init
 
@@ -42,13 +45,13 @@ START:
     MOV R1, #30h
 
 ROTINA:
-    MOV R3, #3
+    
     ACALL leituraTeclado
     JNB F0, ROTINA ; Se F0 estiver limpo, pule para ROTINA
 ROT:
     ACALL clearDisplay
     MOV R2, #10
-	MOV A, #30h
+    MOV A, #30h
     ACALL generateRandomNumber
 
 volta:
@@ -58,14 +61,13 @@ volta:
 
     ACALL displayNumber
 
-    DJNZ R3, ROT
+    
 
-; Comparar com a entrada do usuário
-MOV R4, #3
-MOV R1, #31h
-ACALL checkUserInput
-CLR F0
-JMP MAIN
+;Comparar com a entrada do usuário
+    MOV R4, #3
+    MOV R1, #31h
+    ACALL checkUserInput
+
 
 leituraTeclado:
     MOV R0, #0 ; Limpa R0 - a primeira tecla é a tecla 0
@@ -92,7 +94,7 @@ gotKey:
     RET ; E retorne da sub-rotina
 
 generateRandomNumber:
-     ; Endereço de memória onde armazenar o número gerado
+    ;Endereço de memória onde armazenar o número gerado
     MOV R2, #10 ; Limite superior para o número gerado
 
 generate_loop:
@@ -137,7 +139,7 @@ checkUserInput:
     MOV R1, #31h ; Endereço da entrada do usuário
 
 check_loop:
- MOV R6, #0H
+    MOV R6, #0H
     CJNE R6, #1H, $
     MOV R7, A ;
     MOV A, @R1 ; Carrega o dígito da memória
@@ -151,12 +153,12 @@ check_loop:
 
 INPUT_ACERTO:
 
-MOV SCON, #40h ;porta serial no modo 1
-MOV PCON, #80h ;set o bit SMOD
-MOV TMOD, #20h ;CT1 no modo 2
-MOV TH1, #243 ;valor para a recarga
-MOV TL1, #243 ;valor para a primeira contagem
-SETB TR1 ;liga o contador/temporizador 1
+    MOV SCON, #40h ;porta serial no modo 1
+    MOV PCON, #80h ;set o bit SMOD
+    MOV TMOD, #20h ;CT1 no modo 2
+    MOV TH1, #243 ;valor para a recarga
+    MOV TL1, #243 ;valor para a primeira contagem
+    SETB TR1 ;liga o contador/temporizador 1
     MOV 10H, #'V' 
     MOV 11H, #'I'
     MOV 12H, #'T'
@@ -167,23 +169,23 @@ SETB TR1 ;liga o contador/temporizador 1
     MOV R1, #10H
 
 LB:
-MOV A, @R1
-MOV SBUF, A ;transmite o conteúdo do acumulador
-SUBB A, #16H
-JZ FIM
-JNB TI, $ ;aguarda o término da transmissão
-CLR TI ;apaga indicador de fim de transmissão
-INC R1
+    MOV A, @R1
+    MOV SBUF, A ;transmite o conteúdo do acumulador
+    SUBB A, #16H
+    JZ FIM
+    JNB TI, $ ;aguarda o término da transmissão
+    CLR TI ;apaga indicador de fim de transmissão
+    INC R1
 
 SJMP LB ;volta para a próxima transmissão 
    
 INPUT_ERRO:
-MOV SCON, #40h ;porta serial no modo 1
-MOV PCON, #80h ;set o bit SMOD
-MOV TMOD, #20h ;CT1 no modo 2
-MOV TH1, #243 ;valor para a recarga
-MOV TL1, #243 ;valor para a primeira contagem
-SETB TR1 ;liga o contador/temporizador 1
+    MOV SCON, #40h ;porta serial no modo 1
+    MOV PCON, #80h ;set o bit SMOD
+    MOV TMOD, #20h ;CT1 no modo 2
+    MOV TH1, #243 ;valor para a recarga
+    MOV TL1, #243 ;valor para a primeira contagem
+    SETB TR1 ;liga o contador/temporizador 1
     MOV 50H, #'D' 
     MOV 51H, #'E'
     MOV 52H, #'R'
@@ -194,14 +196,14 @@ SETB TR1 ;liga o contador/temporizador 1
     MOV R1, #50H
 
 LB1:
-MOV A, @R1 
-MOV SBUF, A ;transmite o conteúdo do acumulador
-SUBB A, #56H
-JZ FIM
-JNB TI, $ ;aguarda o término da transmissão
-CLR TI ;apaga indicador de fim de transmissão
-INC R1
-SJMP LB1 ;volta para a próxima transmissão 
+    MOV A, @R1 
+    MOV SBUF, A ;transmite o conteúdo do acumulador
+    SUBB A, #56H
+    JZ FIM
+    JNB TI, $ ;aguarda o término da transmissão
+    CLR TI ;apaga indicador de fim de transmissão
+    INC R1
+    SJMP LB1 ;volta para a próxima transmissão 
 
 
 FIM:
@@ -365,14 +367,18 @@ clearDisplay:
 
     CALL delay_clear  
     RET
+
+
 delay_clear:
- MOV R0, #255
- DJNZ R0, $
- MOV R0, #255
- DJNZ R0, $
- MOV R0, #255
- DJNZ R0, $
- RET
+
+    MOV R0, #255
+    DJNZ R0, $
+    MOV R0, #255
+    DJNZ R0, $
+    MOV R0, #255
+    DJNZ R0, $
+    RET
+
 delay:
     MOV R0, #50
     DJNZ R0, $
