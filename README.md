@@ -21,7 +21,9 @@ Este projeto está na primeira etapa de seu desenvolvimento.
 
 ### Instruções de Uso ✍🏻
 
-- Abra a codificação no EdSim51. 
+- Abra a codificação no EdSim51.
+- Altere o valor de A na função generate_number para mudança do valor pseudoaleatório.
+- Para aumentar a dificuladade abaixe o tempo de recarga do delay_clear
 - Inicie o jogo apertando a tecla '#' do teclado matricial.
 - Decore o valor mostrado no display LCD.
 - Insira o valor decorado no TX.
